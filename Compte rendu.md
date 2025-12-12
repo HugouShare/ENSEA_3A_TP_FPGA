@@ -58,6 +58,105 @@ Nous configurons cela via Assignments > Pin Planner
 
 Nous obtenons alors le résultat suivant : la LED est allumée par défaut et s'éteind lorsque l'on appui sur l'encodeur de gauche. Nous voulons le fonctionnement inverse. Nous modifions donc le code de la manière suivante afin d'obtenir le résultat souhaité :  
 ```
+led0 <= not pushl;
+```
+Nous obtenons alors bien le résultat souhaité : la LED LED0 est éteinte par défaut et lorsque l'on appui sur l'encodeur gauche, celle-ci s'allume !  
+
+### Faire clignoter une LED  
+
+Nous voulons maintenant d'un mode de fonctionnement combinatoire vers un mode de fonctionnement en séquentiel.  
+
+D'après le document "DE10-Nano user manual", nous obtenons l'information suivante :  
+<img width="1036" height="245" alt="image" src="https://github.com/user-attachments/assets/b9454622-d1fd-4841-ab4d-ed316acf3c3c" />  
+
+Nous ajoutons le code suivant :  
+```
+library ieee;
+use ieee.std_logic_1164.all;
+
+entity led_blink is
+    port (
+        i_clk : in std_logic;
+        i_rst_n : in std_logic;
+        o_led : out std_logic
+    );
+end entity led_blink;
+
+architecture rtl of led_blink is
+    signal r_led : std_logic := '0';
+begin
+    process(i_clk, i_rst_n)
+    begin
+        if (i_rst_n = '0') then
+            r_led <= '0';
+        elsif (rising_edge(i_clk)) then
+            r_led <= not r_led;
+        end if;
+    end process;
+    o_led <= r_led;
+end architecture rtl;
+```  
+
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$ TRACER LE SCHEMA CORRESPONDANT AU CODE VHDL $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$  
+
+Dans la zone de compilation, nous ouvrons : Compile Design > Analysis & Synthesis > Netlist Viewers puis lancer RTL Viewer  
+Nous obtenons alors :  
+<img width="1469" height="713" alt="image" src="https://github.com/user-attachments/assets/b442d370-8a39-4ec1-aa37-07036f4d8a15" />  
+
+Dans l'état actuel, la LED clignoterait à 50MHz, ce qui est beaucoup trop rapide.  
+Nous modifions alors le code de manière à réduire cette fréquence.  
+
+Nous modifions le code comme suit :  
+```
+library ieee;
+use ieee.std_logic_1164.all;
+
+entity tuto_quartus is
+    port (
+        i_clk : in std_logic;
+        i_rst_n : in std_logic;
+        o_led : out std_logic
+    );
+end entity tuto_quartus;
+
+architecture rtl of tuto_quartus is
+    signal r_led_enable : std_logic := '0';
+begin
+	process(i_clk, i_rst_n)
+		 variable counter : natural range 0 to 5000000 := 0;
+	begin
+		 if (i_rst_n = '0') then
+			  counter := 0;
+			  r_led_enable <= '0';
+		 elsif (rising_edge(i_clk)) then
+			  if (counter = 5000000) then
+					counter := 0;
+					r_led_enable <= not r_led_enable;
+					-- r_led_enable <= '1';
+			  else
+					counter := counter + 1;
+					-- r_led_enable <= '0';
+			  end if;
+		 end if;
+	end process;
+	o_led <= r_led_enable;
+end architecture rtl;
+```
+
+Depuis la vue RTL, nous obtenons alors :  
+<img width="1529" height="368" alt="image" src="https://github.com/user-attachments/assets/647aa895-4294-4c81-b638-b6c9a60f3a21" />  
+
+Nous utilisons l'encodeur gauche comme bouton de RESET.  
+
+Après avoir compilé et téléversé le code sur la carte FPGA, nous obtenons le résultat suivant :  
+![Clignotement de LED](https://github.com/user-attachments/assets/685e772d-a2a3-4353-b15c-ef6fd09bc2f2)  
+![Clignotement de LED avec appui sur RESET](https://github.com/user-attachments/assets/6dbf51bc-e1bc-4628-9276-16b61fa65c4f)  
+
+Dans ```i_rst_n``` le suffixe _n sert à indiquer une logique inversée : '1' -> '0' et inversement '0' -> '1'.  
+
+### Chennillard !!!  
+
+Nous réalisons maintenant un chennillard sur notre carte FPGA.  
 
 
 
