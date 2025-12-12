@@ -1,4 +1,4 @@
-# 💼 ENSEA_3A_TP_BUS & RESEAUX 💼
+# 💼 ENSEA_3A_TP_FPGA & FPGA AVANCE 💼
 
 ## 📋 Table des matières
 
@@ -20,10 +20,10 @@
 
 ## ⚙️ Introduction
 
-- Dans ce repository GitHub, vous trouverez notre TP de BUS & RESEAUX réalisé dans le cadre de notre dernière année d'étude à l'[ENSEA](https://www.ensea.fr/fr), en spécialité électronique et systèmes embarqués.
+- Dans ce repository GitHub, vous trouverez notre TP de FPGA & FPGA AVANCE réalisé dans le cadre de notre dernière année d'étude à l'[ENSEA](https://www.ensea.fr/fr), en spécialité électronique et systèmes embarqués.
 
 ## 🎯 Organisation du repository
 Vous trouverez, dans le repository, différents dossiers avec :
 - "_Ressources_" : les sujets et documents fournis par le professeur pour le TP
-- "_Livrables_" : les fichiers générés ou utilisés par nous-même durant le TP
+- "_Projet_" : les fichiers générés ou utilisés par nous-même durant le TP
 - "_Compte rendu_" : un fichier markdown servant de rapport de TP
