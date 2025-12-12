@@ -241,6 +241,9 @@ Nous adopterons une démarche en plusieurs étapes afin de parvenir au résultat
 
 ### Gestion des encodeurs  
 
+L'idée est la suivante : lorsque l'on tourne l'encodeur vers la droite, on incrémente la valeur d'un compteur. Lorsque l'on tourne l'encodeur vers la gauche, on décrémente la valeur du compteur.  
+Nous voulons, en plus de cela, afficher sur les leds la valeur du compteur qui ira donc de 1 à 10 (pour pouvoir afficher la valeur du compteur sur les LEDs étant au nombre de 10).  
 
+$$$$$$$$$$$$ ASUIVRE $$$$$$$$$$$$$$$$
 
 
