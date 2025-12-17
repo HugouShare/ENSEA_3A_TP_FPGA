@@ -1,6 +1,6 @@
 # Compte rendu du TP  
 
-Lien vers sujet FPGA : [Sujet de FPGA](https://github.com/lfiack/ENSEA_2A_FPGA_Public/blob/main/mineure/3-tp/fpga_tp.md)  
+Lien vers sujet FPGA : [sujet de FPGA](https://github.com/lfiack/ENSEA_2A_FPGA_Public/blob/main/mineure/3-tp/fpga_tp.md)  
 Lien vers sujet FPGA AVANCE :  
 
 ## Introduction  
@@ -156,6 +156,8 @@ Dans ```i_rst_n``` le suffixe _n sert à indiquer une logique inversée : '1' ->
 
 ### Chennillard !!!  
 
+> CODE : Projet > TP_FPGA_CHENILLARD  
+
 Nous réalisons maintenant un chennillard sur notre carte FPGA.  
 
 Nous avons maintenant 10 LEDs configurées comme suit :  
@@ -224,10 +226,14 @@ begin
 
 end architecture rtl;
 ```  
-NOTE : la ligne ```r_leds <= r_leds(0) & r_leds(9 downto 1);``` permet de réaliser le décallage du '1'. Elle permet de rajouter en bout de ligne un '1' et donc de le décaler dans le buffer.  
+>NOTE :  
+>La ligne ```r_leds <= r_leds(0) & r_leds(9 downto 1);``` permet de réaliser le décallage du '1'. Elle permet de rajouter en bout de ligne un '1' et donc de le décaler dans le buffer.  
 
 Nous obtenons alors un beau chenillard ! 😁  
 ![PXL_20251212_103750952](https://github.com/user-attachments/assets/e038c168-e414-40ad-b3ed-ba4ec03203d5)  
+
+> NOTE :  
+> Seul le code VHDL correspondant au chenillard est fourni dans le dossier ```Projet``` puisqu'il s'appuie sur les parties précédentes et en est une version finale.  
 
 ## Petit projet : écran magique  
 
@@ -244,16 +250,116 @@ Nous adopterons une démarche en plusieurs étapes afin de parvenir au résultat
 L'idée est la suivante : lorsque l'on tourne l'encodeur vers la droite, on incrémente la valeur d'un compteur. Lorsque l'on tourne l'encodeur vers la gauche, on décrémente la valeur du compteur.  
 Nous voulons, en plus de cela, afficher sur les leds la valeur du compteur qui ira donc de 1 à 10 (pour pouvoir afficher la valeur du compteur sur les LEDs étant au nombre de 10).  
 
-#### Détection d'un front montant ou descendant 
+De manière plus détaillée, le fonctionnement est le suivant :  
+Un encodeur renvoie deux signaux : A et B, qui sont en quadrature de phase.  
+Il y a deux conditions possible pour incrémenter le registre :  
+- Front montant sur A et B à l'état bas
+- Front descendant sur A et B à l'état haut  
+Il y a deux conditions possible pour décrémenter le registre :  
+- Front montant sur B et A à l'état bas
+- Front descendant sur B et A à l'état haut
+Ainsi, le compteur augmente si le signal A est en avance de phase sur B et diminue si le signal A est en retard de phase sur le signal B.
+
+#### Analyse fonctionnelle  
+
+$$$$$$$$$$$$$$$$$$$$$$$$$$ A REPRENDRE $$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
 Notre schéma est constitué de deux bascules D synchrones qui permettent de mémoriser les états succéssifs du signal A. La première stocke l'état du courant A et la deuxième stocke l'état précédent du signal A. 
 
 Pour avoir un front montant : On a ```A(t-1) = 0 ``` et ```A(t) = 1 ``` avec les sorties des bascules ```Q2= 0 ``` et ```Q1= 1 ```. Nous devons donc avoir comme condition logique ```Front_montant = Q₁ AND (NOT Q₂) ```. Notre bloc ```???``` est donc une porte logique combinatoire implémentant : ```E <= Q1 and not Q2;```
 
 Pour avoir un front descendant : On a ```A(t-1) = 1 ``` et ```A(t) = 0 ``` avec les sorties des bascules ```Q2= 1 ``` et ```Q1= 0 ```. Nous devons donc avoir comme condition logique ```Front_descendant = (NOT Q₁) AND Q₂ ```. Notre bloc ```???``` est donc une porte logique combinatoire implémentant : ```E <= not Q1 and Q2;```
 
+#### Implémentation de la solution VHDL  
+
+Afin de réaliser un encodeur comme désiré, nous implémentons la solution VHDL suivante :  
+```VHDL
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+entity encodeur is
+    port (
+		i_clk   : in  std_logic;
+		i_rst_n : in  std_logic;
+		i_A     : in  std_logic;
+		i_B     : in  std_logic;
+		  o_led_0  : out std_logic;
+		  o_led_1  : out std_logic;
+		  o_led_2  : out std_logic;
+		  o_led_3  : out std_logic;
+		  o_led_4  : out std_logic;
+		  o_led_5  : out std_logic;
+		  o_led_6  : out std_logic;
+		  o_led_7  : out std_logic;
+		  o_led_8  : out std_logic;
+		  o_led_9  : out std_logic
+    );
+end entity;
+
+architecture rtl of encodeur is
+    signal A_d, B_d : std_logic;
+    signal compteur : unsigned(9 downto 0);
+begin
+
+    process(i_clk, i_rst_n)
+    begin
+        if i_rst_n = '0' then
+            A_d <= '0';
+            B_d <= '0';
+            compteur <= (others => '0');
+
+        elsif rising_edge(i_clk) then
+            -- memorisation des etats precedents
+            A_d <= i_A;
+            B_d <= i_B;
+
+            -- INCREMENTATION
+            if (i_A = '1' and A_d = '0' and i_B = '0') or
+               (i_A = '0' and A_d = '1' and i_B = '1') then
+                compteur <= compteur + 1;
+
+            -- DECREMENTATION
+            elsif (i_B = '1' and B_d = '0' and i_A = '0') or
+                  (i_B = '0' and B_d = '1' and i_A = '1') then
+                compteur <= compteur - 1;
+            end if;
+        end if;
+    end process;
+
+	 o_led_0 <= compteur(0);
+	 o_led_1 <= compteur(1);
+	 o_led_2 <= compteur(2);
+	 o_led_3 <= compteur(3);
+	 o_led_4 <= compteur(4);
+	 o_led_5 <= compteur(5);
+	 o_led_6 <= compteur(6);
+	 o_led_7 <= compteur(7);
+	 o_led_8 <= compteur(8);
+	 o_led_9 <= compteur(9);
+	 
+end architecture;
+```
+
+#### Implémentation du modèle de simulation sur Modelsim  
+
+> CODE SIMULATION : Projet > TP_FPGA_ENCODEURS_MODELSIM  
+
+Nous commençons d'abord par simuler le comportement qu'aurait une carte FPGA suite à l'implémentation de notre solution VHDL.  
+
+Après avoir écrit notre fichier ```encodeurs_tb.bhd```, nous obtenons les résultats de simulations suivants :  
 <img width="1421" height="504" alt="image" src="https://github.com/user-attachments/assets/e128e36f-d2b3-402c-abf8-7e0ae297283a" />  
 <img width="1419" height="503" alt="image" src="https://github.com/user-attachments/assets/481640d8-7bae-48d1-a335-b3e0c201ce07" />  
+$$$$$$$$$ IMAGES DE SIMULATION A MODIFIER PAR RAPPORT A NOUVELLE VERSION $$$$$$$$$$$$$$$$
 
-$$$$$$$$$$$$ ASUIVRE $$$$$$$$$$$$$$$$
+#### Implémentation du code VHDL sur la carte FPGA  
 
+> CODE CIBLE : Projet > TP_FPGA_ENCODEURS_QUARTUS
 
+Suite à cela, nous téléversons alors notre fichier VHDL sur notre carte FPGA.  
+
+Voici le schéma RTL généré par Quartus :  
+$$$$$$$$$$$$$$$$$$$ INSERER SHCEMA RTL QUARTUS $$$$$$$$$$$$$$$$$$$
+
+Voici le résultat :  
+$$$$$$$$$$$$$$$$$$ INSERER IMAGE VIDEO FPGA AVEC ENCODEUR $$$$$$$$$$$$$$
