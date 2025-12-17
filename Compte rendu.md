@@ -251,6 +251,8 @@ Pour avoir un front montant : On a ```A(t-1) = 0 ``` et ```A(t) = 1 ``` avec les
 
 Pour avoir un front descendant : On a ```A(t-1) = 1 ``` et ```A(t) = 0 ``` avec les sorties des bascules ```Q2= 1 ``` et ```Q1= 0 ```. Nous devons donc avoir comme condition logique ```Front_descendant = (NOT Q₁) AND Q₂ ```. Notre bloc ```???``` est donc une porte logique combinatoire implémentant : ```E <= not Q1 and Q2;```
 
+<img width="1421" height="504" alt="image" src="https://github.com/user-attachments/assets/e128e36f-d2b3-402c-abf8-7e0ae297283a" />  
+<img width="1419" height="503" alt="image" src="https://github.com/user-attachments/assets/481640d8-7bae-48d1-a335-b3e0c201ce07" />  
 
 $$$$$$$$$$$$ ASUIVRE $$$$$$$$$$$$$$$$
 
