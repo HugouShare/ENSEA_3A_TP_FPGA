@@ -244,6 +244,14 @@ Nous adopterons une démarche en plusieurs étapes afin de parvenir au résultat
 L'idée est la suivante : lorsque l'on tourne l'encodeur vers la droite, on incrémente la valeur d'un compteur. Lorsque l'on tourne l'encodeur vers la gauche, on décrémente la valeur du compteur.  
 Nous voulons, en plus de cela, afficher sur les leds la valeur du compteur qui ira donc de 1 à 10 (pour pouvoir afficher la valeur du compteur sur les LEDs étant au nombre de 10).  
 
+#### Détection d'un front montant ou descendant 
+Notre schéma est constitué de deux bascules D synchrones qui permettent de mémoriser les états succéssifs du signal A. La première stocke l'état du courant A et la deuxième stocke l'état précédent du signal A. 
+
+Pour avoir un front montant : On a ```A(t-1) = 0 ``` et ```A(t) = 1 ``` avec les sorties des bascules ```Q2= 0 ``` et ```Q1= 1 ```. Nous devons donc avoir comme condition logique ```Front_montant = Q₁ AND (NOT Q₂) ```. Notre bloc ```???``` est donc une porte logique combinatoire implémentant : ```E <= Q1 and not Q2;```
+
+Pour avoir un front descendant : On a ```A(t-1) = 1 ``` et ```A(t) = 0 ``` avec les sorties des bascules ```Q2= 1 ``` et ```Q1= 0 ```. Nous devons donc avoir comme condition logique ```Front_descendant = (NOT Q₁) AND Q₂ ```. Notre bloc ```???``` est donc une porte logique combinatoire implémentant : ```E <= not Q1 and Q2;```
+
+
 $$$$$$$$$$$$ ASUIVRE $$$$$$$$$$$$$$$$
 
 
