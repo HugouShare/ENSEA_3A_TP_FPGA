@@ -1,0 +1,47 @@
+|encodeur
+i_clk => compteur[0].CLK
+i_clk => compteur[1].CLK
+i_clk => compteur[2].CLK
+i_clk => compteur[3].CLK
+i_clk => compteur[4].CLK
+i_clk => compteur[5].CLK
+i_clk => compteur[6].CLK
+i_clk => compteur[7].CLK
+i_clk => compteur[8].CLK
+i_clk => compteur[9].CLK
+i_clk => B_d.CLK
+i_clk => A_d.CLK
+i_rst_n => compteur[0].ACLR
+i_rst_n => compteur[1].ACLR
+i_rst_n => compteur[2].ACLR
+i_rst_n => compteur[3].ACLR
+i_rst_n => compteur[4].ACLR
+i_rst_n => compteur[5].ACLR
+i_rst_n => compteur[6].ACLR
+i_rst_n => compteur[7].ACLR
+i_rst_n => compteur[8].ACLR
+i_rst_n => compteur[9].ACLR
+i_rst_n => B_d.ACLR
+i_rst_n => A_d.ACLR
+i_A => process_0.IN1
+i_A => process_0.IN1
+i_A => A_d.DATAIN
+i_A => process_0.IN1
+i_A => process_0.IN1
+i_B => process_0.IN1
+i_B => process_0.IN1
+i_B => B_d.DATAIN
+i_B => process_0.IN1
+i_B => process_0.IN1
+o_led_0 << compteur[0].DB_MAX_OUTPUT_PORT_TYPE
+o_led_1 << compteur[1].DB_MAX_OUTPUT_PORT_TYPE
+o_led_2 << compteur[2].DB_MAX_OUTPUT_PORT_TYPE
+o_led_3 << compteur[3].DB_MAX_OUTPUT_PORT_TYPE
+o_led_4 << compteur[4].DB_MAX_OUTPUT_PORT_TYPE
+o_led_5 << compteur[5].DB_MAX_OUTPUT_PORT_TYPE
+o_led_6 << compteur[6].DB_MAX_OUTPUT_PORT_TYPE
+o_led_7 << compteur[7].DB_MAX_OUTPUT_PORT_TYPE
+o_led_8 << compteur[8].DB_MAX_OUTPUT_PORT_TYPE
+o_led_9 << compteur[9].DB_MAX_OUTPUT_PORT_TYPE
+
+

@@ -1,0 +1,39 @@
+# Compile of encodeurs.vhd was successful.
+# Compile of encodeurs_tb.vhd was successful.
+# 2 compiles, 0 failed with no errors.
+vsim -c work.tb_encodeur
+# vsim -c work.tb_encodeur 
+# Start time: 09:41:02 on Dec 17,2025
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.numeric_std(body)
+# Loading work.tb_encodeur(sim)
+# Loading work.encodeur(rtl)
+add wave -position insertpoint  \
+sim:/tb_encodeur/clk
+add wave -position insertpoint  \
+sim:/tb_encodeur/reset
+add wave -position insertpoint  \
+sim:/tb_encodeur/A
+add wave -position insertpoint  \
+sim:/tb_encodeur/B
+add wave -position insertpoint  \
+sim:/tb_encodeur/leds
+run 300 ns
+run 2s
+# Invalid time value: 2s
+run 1 s
+# Invalid time value: 1 s
+run 1000 ns
+run 2000 ns
+run 1500 ns
+run 1500 ns
+run 1500 ns
+# WARNING: No extended dataflow license exists
+# Error: invalid command name "::.main_pane.dataflow.interior.cs.body.pw.df.c"
+# Error: invalid command name "::.main_pane.dataflow.interior.cs.body.pw.df.c"
+# Error: invalid command name "::.main_pane.dataflow.interior.cs.body.pw.df.c"
+# Error - Undo: invalid command name ".main_pane.dataflow.interior.cs.body.pw.wf.top.tree.tree1" command is .main_pane.dataflow.interior.cs.body.pw.wf.top.tree.tree1 undo delete 0
+# End time: 10:35:53 on Dec 17,2025, Elapsed time: 0:54:51
+# Errors: 1, Warnings: 5
