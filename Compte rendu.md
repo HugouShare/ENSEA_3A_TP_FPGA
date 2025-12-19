@@ -498,7 +498,7 @@ Test et simulation sur ModelSim :
 #### Data Enable : Pixels actifs  
 On décrit le registre de sortie ```o_hdmi_de``` de telle sorte qu'en cas de reset, la sortie prenne la valeur 'O'. Et en cas de front montant : ```o_hdmi_de <= r_v_active and r_h_active;```
 
-#### Générateur d'adresse et de coordonnées
+#### Générateur d'adresse et de coordonnées  
 Nous écrivons le code permettant de générer le signal ```o_pixel_en``` et les signaux ```o_x_counter``` , ```o_y_counter``` et ```o_pixel_address```.
 
 Nous ajoutons le fichier ```hdmi_controler.vhd au projet```.
@@ -520,15 +520,31 @@ Nous instancions le composant ```hdmi_controler``` dans notre fichier top (telec
         );
 ```
 
-### Déplacement d'un pixel
+### Déplacement d'un pixel  
 Nous modifions le fichier ```telecran.vhd```, on atribue la valeur blanche ```o_hdmi_tx_d``` : 
 ```VHDL
 o_hdmi_tx_d <= (others => '1') when s_pixel_data = x"FF" else (others => '0');
 ```
-### Mémorisation
+
+### Mémorisation  
+On a réussi à mémoiriser les pixels parcourus pour afficher le dessin. Nous avons utilisé un ```framebuffer``` pour stocker les pixels déjà allumés. 
+
+Une mémoire ```dual-port``` est une mémoire qui possède deux ports d’accès indépendants, permettant deux opérations simultanées sur la même mémoire. Elle peut effectuer en même temps une lecture ou une écriture.
+
+Fichier ```dpram.vhd``` : 
+
+Extension du composant ```dpram``` dans le fichier ```telecran.vhd``` : 
+``` VHDL
+
+
+```
+
+### Effacement  
 
 
 #### Résultat de notre Telecran : 
+
+Notre encodeur gauche déplace le pixel à l'horizontal, l'encodeur droit déplace le pixel à la verticale. Lorsque nous appuyons sur le bouton de l'encodeur gauche, l'écran s'éteint.
 <img width="638" height="603" alt="image" src="https://github.com/user-attachments/assets/be6cb17f-2398-447d-b5d1-5ce0a3c79515" />
 
 
