@@ -468,3 +468,7 @@ $$$$$$$$$$$$$$$$$$$ INSERER SHCEMA RTL QUARTUS PDF $$$$$$$$$$$$$$$$$$$
 Voici le résultat :  
 
 ### Comment visualiser la sortie HDMI ? 
+Nous avons branché le cable HDMI à notre carte et à l'adaptateur. Puis nous avons branché le port USB à l'ordinateur.
+Puis nous lançons le logiciel VLC et ajoutons un nouveau Capture Device et définissons le Video device name en ```USB Video```   : 
+<img width="636" height="613" alt="image" src="https://github.com/user-attachments/assets/544abffe-df75-41b0-b813-94bff751b3c2" />
+
