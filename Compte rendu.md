@@ -3,6 +3,8 @@
 Lien vers sujet FPGA : [sujet de FPGA](https://github.com/lfiack/ENSEA_2A_FPGA_Public/blob/main/mineure/3-tp/fpga_tp.md)  
 Lien vers sujet FPGA AVANCE :  
 
+# TP FPGA  
+
 ## Introduction  
 
 Durant ces séances de travaux pratiques nous allons travailler sur Quartus.  
@@ -470,5 +472,27 @@ Voici le résultat :
 ### Comment visualiser la sortie HDMI ? 
 Nous avons branché le cable HDMI à notre carte et à l'adaptateur. Puis nous avons branché le port USB à l'ordinateur.
 Puis nous lançons le logiciel VLC et ajoutons un nouveau Capture Device et définissons le Video device name en ```USB Video```   : 
-<img width="636" height="613" alt="image" src="https://github.com/user-attachments/assets/544abffe-df75-41b0-b813-94bff751b3c2" />
+<img width="636" height="613" alt="image" src="https://github.com/user-attachments/assets/544abffe-df75-41b0-b813-94bff751b3c2" /> 
+
+### Contrôleur HDMI
+Nous avons remis en oeuvre le contrôleur HDMI conçu en TD : 
+#### Entity
+1. Création d'un fichier hdmi_controler.vhd
+2. Écriture de la partie ```generic``` de son ```entity```
+3. Écriture de la partie ```port``` de  ```entity```
+
+#### Synchro horizontale
+1. Création trois constantes : ```h_start : h_sync + h_fp``` ,  ```h_end : h_start + h_res``` , ```h_total : h_end + h_bp```
+2. Création de deux registres : ```r_h_count``` et ```r_h_active```
+3. Création d'un process sensible aux signaux d'horloge et de reset
+4. Ecriture des différents codes des signaux et de registre
+
+#### Synchro verticale 
+1. Création trois constantes : ```v_start : v_sync + v_fp``` ,  ```v_end : v_start + v_res``` , ```v_total : v_end + v_bp```
+2. Création de deux registres : ```r_v_count``` et ```r_v_active```
+3. Création d'un process sensible aux signaux d'horloge et de reset
+4. Ecriture des différents codes des signaux et de registre
+Test et simulation sur ModelSim :
+<img width="1876" height="645" alt="image" src="https://github.com/user-attachments/assets/38516761-5560-4449-9fe3-8ec12c78684c" />
+
 
