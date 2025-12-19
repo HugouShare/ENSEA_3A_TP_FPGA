@@ -23,7 +23,7 @@ Notre carte est la : ```5CSEBA6U23I7```
 
 Nous créons un fichier VHDL et écrivons le code fournis dans le sujet. Ce code permet d'allumer la LED0 lorsqu'un bouton poussoir de l'encodeur gauche est enfoncé.  
 Voici le code :  
-```
+```VHDL
 library ieee;
 use ieee.std_logic_1164.all;
 
@@ -70,7 +70,7 @@ D'après le document "DE10-Nano user manual", nous obtenons l'information suivan
 <img width="1036" height="245" alt="image" src="https://github.com/user-attachments/assets/b9454622-d1fd-4841-ab4d-ed316acf3c3c" />  
 
 Nous ajoutons le code suivant :  
-```
+```VHDL
 library ieee;
 use ieee.std_logic_1164.all;
 
@@ -107,7 +107,7 @@ Dans l'état actuel, la LED clignoterait à 50MHz, ce qui est beaucoup trop rapi
 Nous modifions alors le code de manière à réduire cette fréquence.  
 
 Nous modifions le code comme suit :  
-```
+```VHDL
 library ieee;
 use ieee.std_logic_1164.all;
 
@@ -164,7 +164,7 @@ Nous avons maintenant 10 LEDs configurées comme suit :
 <img width="253" height="565" alt="image" src="https://github.com/user-attachments/assets/937df7fa-2427-4d26-b986-59d42cb6aec0" />  
 
 Nous écrivons le code suivant :  
-```
+```VHDL
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
