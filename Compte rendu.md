@@ -493,6 +493,19 @@ Nous avons remis en oeuvre le contrôleur HDMI conçu en TD :
 3. Création d'un process sensible aux signaux d'horloge et de reset
 4. Ecriture des différents codes des signaux et de registre
 Test et simulation sur ModelSim :
-<img width="1876" height="645" alt="image" src="https://github.com/user-attachments/assets/38516761-5560-4449-9fe3-8ec12c78684c" />
+<img width="1807" height="620" alt="image" src="https://github.com/user-attachments/assets/e6c44105-2067-482f-8ab3-932ff538f37b" />
+
+#### Data Enable : Pixels actifs  
+On décrit le registre de sortie ```o_hdmi_de``` de telle sorte qu'en cas de reset, la sortie prenne la valeur 'O'. Et en cas de front montant : ```o_hdmi_de <= r_v_active and r_h_active;```
+
+#### Générateur d'adresse et de coordonnées
+Nous écrivons le code permettant de générer le signal ```o_pixel_en``` et les signaux ```o_x_counter``` , ```o_y_counter``` et ```o_pixel_address```.
+
+Nous ajoutons le fichier ```hdmi_controler.vhd au projet```.
+
+
+
+
+
 
 
