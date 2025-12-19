@@ -503,7 +503,22 @@ Nous écrivons le code permettant de générer le signal ```o_pixel_en``` et les
 
 Nous ajoutons le fichier ```hdmi_controler.vhd au projet```.
 
-
+Nous instancions le composant ```hdmi_controler``` dans notre fichier top (telecran.vhd).
+```VHDL
+-- HDMI controler
+    hdmi_ctrl : component hdmi_controler
+        port map (
+            i_clk           => s_clk_27,
+            i_rst_n         => s_rst_n,
+            o_hdmi_hs       => o_hdmi_tx_hs,
+            o_hdmi_vs       => o_hdmi_tx_vs,
+            o_hdmi_de       => o_hdmi_tx_de,
+            o_pixel_en      => open,
+            o_pixel_address => s_pixel_address,
+            o_x_counter     => open,
+            o_y_counter     => open
+        );
+```
 
 
 
