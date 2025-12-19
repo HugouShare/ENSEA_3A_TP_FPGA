@@ -633,6 +633,7 @@ Signaux pour l'éffacement qui ont été introduit dans ```telecran.vhd```
 
 ```
 
+
 FOnction pour l'effacement de la RAM : 
 ```VHDL
 	process(i_clk_50, i_rst_n)
@@ -655,9 +656,11 @@ FOnction pour l'effacement de la RAM :
     end process;
 ```
 
+
 #### Résultat de notre Telecran : 
 
 Notre encodeur gauche déplace le pixel à l'horizontal, l'encodeur droit déplace le pixel à la verticale. Lorsque nous appuyons sur le bouton de l'encodeur gauche, l'écran s'éteint.
+
 <img width="638" height="603" alt="image" src="https://github.com/user-attachments/assets/be6cb17f-2398-447d-b5d1-5ce0a3c79515" />
 
 
