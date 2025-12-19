@@ -533,14 +533,127 @@ Une mémoire ```dual-port``` est une mémoire qui possède deux ports d’accès
 
 Fichier ```dpram.vhd``` : 
 
+```VHDL
+library ieee;
+use ieee.std_logic_1164.all;
+
+entity dpram is
+    generic
+    (
+        mem_size    : natural := 720 * 480;
+        data_width  : natural := 8
+    );
+   port 
+   (   
+        i_clk_a        : in std_logic;
+        i_clk_b        : in std_logic;
+
+        i_data_a    : in std_logic_vector(data_width-1 downto 0);
+        i_data_b    : in std_logic_vector(data_width-1 downto 0);
+        i_addr_a    : in natural range 0 to mem_size-1;
+        i_addr_b    : in natural range 0 to mem_size-1;
+        i_we_a      : in std_logic := '1';
+        i_we_b      : in std_logic := '1';
+        o_q_a       : out std_logic_vector(data_width-1 downto 0);
+        o_q_b       : out std_logic_vector(data_width-1 downto 0)
+   );
+   
+end dpram;
+
+architecture rtl of dpram is
+    -- Build a 2-D array type for the RAM
+    subtype word_t is std_logic_vector(data_width-1 downto 0);
+    type memory_t is array(0 to mem_size-1) of word_t;
+    
+    -- Declare the RAM
+    shared variable ram : memory_t;
+begin
+    -- Port A
+    process(i_clk_a)
+    begin
+        if(rising_edge(i_clk_a)) then 
+            if(i_we_a = '1') then
+                ram(i_addr_a) := i_data_a;
+            end if;
+            o_q_a <= ram(i_addr_a);
+        end if;
+    end process;
+    
+    -- Port B
+    process(i_clk_b)
+    begin
+        if(rising_edge(i_clk_b)) then
+            if(i_we_b = '1') then
+                ram(i_addr_b) := i_data_b;
+            end if;
+            o_q_b <= ram(i_addr_b);
+        end if;
+    end process;
+end rtl;
+```
+
 Extension du composant ```dpram``` dans le fichier ```telecran.vhd``` : 
 ``` VHDL
+	component dpram 
+        generic (
+            mem_size    : natural := 720 * 480;
+            data_width  : natural := 8
+        );
+        port (   
+            i_clk_a     : in std_logic;
+            i_clk_b     : in std_logic;
+            i_data_a    : in std_logic_vector(data_width-1 downto 0);
+            i_data_b    : in std_logic_vector(data_width-1 downto 0);
+            i_addr_a    : in natural range 0 to mem_size-1;
+            i_addr_b    : in natural range 0 to mem_size-1;
+            i_we_a      : in std_logic := '1';
+            i_we_b      : in std_logic := '1';
+            o_q_a       : out std_logic_vector(data_width-1 downto 0);
+            o_q_b       : out std_logic_vector(data_width-1 downto 0)
+       );
+    end component;
 
+```
+Puis nous modifions le signal ```o_hdmi_tx_d```.
+
+
+### Effacement  
+Il faut l faut :
+- Détecter l’appui sur un bouton,
+- Lancer un processus automatique,
+- Ecrire 0 partout,
+- Puis revenir au fonctionnement normal.
+
+Signaux pour l'éffacement qui ont été introduit dans ```telecran.vhd```
+```VHDL
+	signal r_erase_active : std_logic := '0';
+    signal r_erase_addr   : natural range 0 to (720 * 480) - 1 := 0;
+    signal s_mux_addr_a   : natural range 0 to (720 * 480) - 1;
+    signal s_mux_data_a   : std_logic_vector(7 downto 0);
 
 ```
 
-### Effacement  
-
+FOnction pour l'effacement de la RAM : 
+```VHDL
+	process(i_clk_50, i_rst_n)
+    begin
+        if i_rst_n = '0' then
+            r_erase_active <= '0';
+            r_erase_addr   <= 0;
+        elsif rising_edge(i_clk_50) then
+            if i_left_pb = '0' then -- Bouton pressé
+                r_erase_active <= '1';
+                r_erase_addr   <= 0;
+            elsif r_erase_active = '1' then
+                if r_erase_addr = (720 * 480) - 1 then
+                    r_erase_active <= '0';
+                else
+                    r_erase_addr <= r_erase_addr + 1;
+                end if;
+            end if;
+        end if;
+    end process;
+```
 
 #### Résultat de notre Telecran : 
 
