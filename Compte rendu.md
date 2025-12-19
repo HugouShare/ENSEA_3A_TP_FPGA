@@ -520,6 +520,16 @@ Nous instancions le composant ```hdmi_controler``` dans notre fichier top (telec
         );
 ```
 
+### Déplacement d'un pixel
+Nous modifions le fichier ```telecran.vhd```, on atribue la valeur blanche ```o_hdmi_tx_d``` : 
+```VHDL
+o_hdmi_tx_d <= (others => '1') when s_pixel_data = x"FF" else (others => '0');
+```
+### Mémorisation
+
+
+#### Résultat de notre Telecran : 
+<img width="638" height="603" alt="image" src="https://github.com/user-attachments/assets/be6cb17f-2398-447d-b5d1-5ce0a3c79515" />
 
 
 
