@@ -262,13 +262,7 @@ Ainsi, le compteur augmente si le signal A est en avance de phase sur B et dimin
 
 #### Analyse fonctionnelle  
 
-$$$$$$$$$$$$$$$$$$$$$$$$$$ A REPRENDRE $$$$$$$$$$$$$$$$$$$$$$$$$$$$
-
-Notre schéma est constitué de deux bascules D synchrones qui permettent de mémoriser les états succéssifs du signal A. La première stocke l'état du courant A et la deuxième stocke l'état précédent du signal A. 
-
-Pour avoir un front montant : On a ```A(t-1) = 0 ``` et ```A(t) = 1 ``` avec les sorties des bascules ```Q2= 0 ``` et ```Q1= 1 ```. Nous devons donc avoir comme condition logique ```Front_montant = Q₁ AND (NOT Q₂) ```. Notre bloc ```???``` est donc une porte logique combinatoire implémentant : ```E <= Q1 and not Q2;```
-
-Pour avoir un front descendant : On a ```A(t-1) = 1 ``` et ```A(t) = 0 ``` avec les sorties des bascules ```Q2= 1 ``` et ```Q1= 0 ```. Nous devons donc avoir comme condition logique ```Front_descendant = (NOT Q₁) AND Q₂ ```. Notre bloc ```???``` est donc une porte logique combinatoire implémentant : ```E <= not Q1 and Q2;```
+$$$$$$$$$$$$$$$$$$$$$$$$$$ A REPRENDRE $$$$$$$$$$$$$$$$$$$$$$$$$$$$  
 
 #### Implémentation de la solution VHDL  
 
@@ -280,64 +274,176 @@ use ieee.numeric_std.all;
 
 entity encodeur is
     port (
-		i_clk   : in  std_logic;
-		i_rst_n : in  std_logic;
-		i_A     : in  std_logic;
-		i_B     : in  std_logic;
-		  o_led_0  : out std_logic;
-		  o_led_1  : out std_logic;
-		  o_led_2  : out std_logic;
-		  o_led_3  : out std_logic;
-		  o_led_4  : out std_logic;
-		  o_led_5  : out std_logic;
-		  o_led_6  : out std_logic;
-		  o_led_7  : out std_logic;
-		  o_led_8  : out std_logic;
-		  o_led_9  : out std_logic
+        i_clk   : in  std_logic;
+        i_rst_n : in  std_logic;
+        i_A     : in  std_logic;
+        i_B     : in  std_logic;
+        o_led_0 : out std_logic;
+        o_led_1 : out std_logic;
+        o_led_2 : out std_logic;
+        o_led_3 : out std_logic;
+        o_led_4 : out std_logic;
+        o_led_5 : out std_logic;
+        o_led_6 : out std_logic;
+        o_led_7 : out std_logic;
+        o_led_8 : out std_logic;
+        o_led_9 : out std_logic
     );
 end entity;
 
 architecture rtl of encodeur is
-    signal A_d, B_d : std_logic;
-    signal compteur : unsigned(9 downto 0);
+
+    ------------------------------------------------------------------
+    -- PARAMÈTRE DE DEBOUNCE
+    -- (ex: 50_000 cycles ≈ 1 ms @ 50 MHz)
+    ------------------------------------------------------------------
+    constant DEBOUNCE_CYCLES : integer := 50_000;
+
+    ------------------------------------------------------------------
+    -- SIGNAUX DEBOUNCE A
+    ------------------------------------------------------------------
+    signal A_sync   : std_logic := '0';
+    signal A_stable : std_logic := '0';
+    signal A_count  : integer range 0 to DEBOUNCE_CYCLES := 0;
+
+    ------------------------------------------------------------------
+    -- SIGNAUX DEBOUNCE B
+    ------------------------------------------------------------------
+    signal B_sync   : std_logic := '0';
+    signal B_stable : std_logic := '0';
+    signal B_count  : integer range 0 to DEBOUNCE_CYCLES := 0;
+
+    ------------------------------------------------------------------
+    -- DÉTECTION DE FRONTS
+    ------------------------------------------------------------------
+    signal A_d, B_d : std_logic := '0';
+
+    ------------------------------------------------------------------
+    -- COMPTEUR
+    ------------------------------------------------------------------
+    signal compteur : unsigned(9 downto 0) := (others => '0');
+
 begin
 
+    ------------------------------------------------------------------
+    -- PROCESS UNIQUE : DEBOUNCE + ENCODEUR
+    ------------------------------------------------------------------
     process(i_clk, i_rst_n)
     begin
         if i_rst_n = '0' then
+            -- Reset global
+            A_sync   <= '0';
+            A_stable <= '0';
+            A_count  <= 0;
+
+            B_sync   <= '0';
+            B_stable <= '0';
+            B_count  <= 0;
+
             A_d <= '0';
             B_d <= '0';
+
             compteur <= (others => '0');
+				
 
         elsif rising_edge(i_clk) then
-            -- memorisation des etats precedents
-            A_d <= i_A;
-            B_d <= i_B;
+            ------------------------------------------------------------------
+            -- 1️⃣ SYNCHRONISATION (anti-métastabilité)
+            ------------------------------------------------------------------
+            A_sync <= i_A;
+            B_sync <= i_B;
 
-            -- INCREMENTATION
-            if (i_A = '1' and A_d = '0' and i_B = '0') or
-               (i_A = '0' and A_d = '1' and i_B = '1') then
-                compteur <= compteur + 1;
-
-            -- DECREMENTATION
-            elsif (i_B = '1' and B_d = '0' and i_A = '0') or
-                  (i_B = '0' and B_d = '1' and i_A = '1') then
-                compteur <= compteur - 1;
+            ------------------------------------------------------------------
+            -- 2️⃣ DEBOUNCE A
+            ------------------------------------------------------------------
+            if A_sync /= A_stable then
+                A_count <= A_count + 1;
+                if A_count = DEBOUNCE_CYCLES then
+                    A_stable <= A_sync;
+                    A_count  <= 0;
+                end if;
+            else
+                A_count <= 0;
             end if;
+
+            ------------------------------------------------------------------
+            -- 3️⃣ DEBOUNCE B
+            ------------------------------------------------------------------
+            if B_sync /= B_stable then
+                B_count <= B_count + 1;
+                if B_count = DEBOUNCE_CYCLES then
+                    B_stable <= B_sync;
+                    B_count  <= 0;
+                end if;
+            else
+                B_count <= 0;
+            end if;
+
+            ------------------------------------------------------------------
+            -- 4️⃣ DÉTECTION DE FRONTS (sur signaux propres)
+            ------------------------------------------------------------------
+            A_d <= A_stable;
+            B_d <= B_stable;
+
+            ------------------------------------------------------------------
+            -- 5️⃣ LOGIQUE ENCODEUR
+            ------------------------------------------------------------------
+				-- INCRÉMENTATION
+				if (A_stable = '1' and A_d = '0' and B_stable = '0') or
+					(A_stable = '0' and A_d = '1' and B_stable = '1') then
+
+					 if compteur = 9 then
+						  compteur <= (others => '0');  -- retour à 0
+					 else
+						  compteur <= compteur + 1;
+					 end if;
+
+				-- DÉCRÉMENTATION
+				elsif (B_stable = '1' and B_d = '0' and A_stable = '0') or
+						(B_stable = '0' and B_d = '1' and A_stable = '1') then
+
+					 if compteur = 0 then
+						  compteur <= to_unsigned(9, compteur'length); -- retour à 9
+					 else
+						  compteur <= compteur - 1;
+					 end if;
+
+				end if;
         end if;
     end process;
 
-	 o_led_0 <= compteur(0);
-	 o_led_1 <= compteur(1);
-	 o_led_2 <= compteur(2);
-	 o_led_3 <= compteur(3);
-	 o_led_4 <= compteur(4);
-	 o_led_5 <= compteur(5);
-	 o_led_6 <= compteur(6);
-	 o_led_7 <= compteur(7);
-	 o_led_8 <= compteur(8);
-	 o_led_9 <= compteur(9);
-	 
+    --------------------------------------------------------------------
+    -- DECODAGE DU COMPTEUR VERS LES LEDS (ONE-HOT)
+    --------------------------------------------------------------------
+    process(compteur)
+    begin
+        -- éteindre toutes les LEDs par défaut
+        o_led_0 <= '0';
+        o_led_1 <= '0';
+        o_led_2 <= '0';
+        o_led_3 <= '0';
+        o_led_4 <= '0';
+        o_led_5 <= '0';
+        o_led_6 <= '0';
+        o_led_7 <= '0';
+        o_led_8 <= '0';
+        o_led_9 <= '0';
+
+        case to_integer(compteur) is
+            when 0 => o_led_0 <= '1';
+            when 1 => o_led_1 <= '1';
+            when 2 => o_led_2 <= '1';
+            when 3 => o_led_3 <= '1';
+            when 4 => o_led_4 <= '1';
+            when 5 => o_led_5 <= '1';
+            when 6 => o_led_6 <= '1';
+            when 7 => o_led_7 <= '1';
+            when 8 => o_led_8 <= '1';
+            when 9 => o_led_9 <= '1';
+            when others => null; -- aucune LED si > 9
+        end case;
+    end process;
+
 end architecture;
 ```
 
@@ -348,8 +454,6 @@ end architecture;
 Nous commençons d'abord par simuler le comportement qu'aurait une carte FPGA suite à l'implémentation de notre solution VHDL.  
 
 Après avoir écrit notre fichier ```encodeurs_tb.bhd```, nous obtenons les résultats de simulations suivants :  
-<img width="1421" height="504" alt="image" src="https://github.com/user-attachments/assets/e128e36f-d2b3-402c-abf8-7e0ae297283a" />  
-<img width="1419" height="503" alt="image" src="https://github.com/user-attachments/assets/481640d8-7bae-48d1-a335-b3e0c201ce07" />  
 $$$$$$$$$ IMAGES DE SIMULATION A MODIFIER PAR RAPPORT A NOUVELLE VERSION $$$$$$$$$$$$$$$$
 
 #### Implémentation du code VHDL sur la carte FPGA  
@@ -359,7 +463,8 @@ $$$$$$$$$ IMAGES DE SIMULATION A MODIFIER PAR RAPPORT A NOUVELLE VERSION $$$$$$$
 Suite à cela, nous téléversons alors notre fichier VHDL sur notre carte FPGA.  
 
 Voici le schéma RTL généré par Quartus :  
-$$$$$$$$$$$$$$$$$$$ INSERER SHCEMA RTL QUARTUS $$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$ INSERER SHCEMA RTL QUARTUS PDF $$$$$$$$$$$$$$$$$$$
 
 Voici le résultat :  
-$$$$$$$$$$$$$$$$$$ INSERER IMAGE VIDEO FPGA AVEC ENCODEUR $$$$$$$$$$$$$$
+
+### Comment visualiser la sortie HDMI ? 
