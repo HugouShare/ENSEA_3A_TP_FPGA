@@ -2,8 +2,6 @@
 
 Lien vers sujet FPGA : [sujet de FPGA](https://github.com/lfiack/ENSEA_2A_FPGA_Public/blob/main/mineure/3-tp/fpga_tp.md)  
 
-# TP FPGA  
-
 ## Introduction  
 
 Durant ces séances de travaux pratiques nous allons travailler sur Quartus.  
