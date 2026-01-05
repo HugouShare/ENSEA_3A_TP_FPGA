@@ -1,7 +1,7 @@
 # Compte rendu du TP  
 
 Lien vers sujet FPGA : [sujet de FPGA](https://github.com/lfiack/ENSEA_2A_FPGA_Public/blob/main/mineure/3-tp/fpga_tp.md)  
-Lien vers sujet FPGA AVANCE :  
+Lien vers sujet FPGA AVANCE : [sujet de FPGA](https://github.com/lfiack/ENSEA_2A_FPGA_Public/blob/main/majeure/3-tp/fpga_adv_tp.md)  
 
 # TP FPGA  
 
