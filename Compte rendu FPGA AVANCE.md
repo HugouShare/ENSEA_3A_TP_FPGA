@@ -2,8 +2,6 @@
 
 Lien vers sujet FPGA AVANCE : [sujet de FPGA AVANCE](https://github.com/lfiack/ENSEA_2A_FPGA_Public/blob/main/majeure/3-tp/fpga_adv_tp.md)  
 
-# TP FPGA AVANCE  
-
 ## Introduction  
 
 Durant ces séances de travaux pratiques nous allons travailler sur Quartus.  
