@@ -466,7 +466,7 @@ Suite à cela, nous téléversons alors notre fichier VHDL sur notre carte FPGA.
 Voici le schéma RTL généré par Quartus :  
 
 <img width="1849" height="429" alt="image" src="https://github.com/user-attachments/assets/00e54cc4-dedf-4427-93e9-629ea8364190" />
-Pour voir plus en détails : [lien PDF schéma RTL](https://github.com/username/repository/blob/main/chemin/vers/le/fichier.pdf).
+Pour voir plus en détails : [lien PDF schéma RTL](https://github.com/HugouShare/ENSEA_3A_TP_FPGA-FPGA_AVANCE/blob/main/Projet/TP_FPGA/fichier%20RTL.pdf).
 
 Voici le résultat :  
 
