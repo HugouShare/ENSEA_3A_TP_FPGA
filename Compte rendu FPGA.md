@@ -348,13 +348,13 @@ begin
 
         elsif rising_edge(i_clk) then
             ------------------------------------------------------------------
-            -- 1️⃣ SYNCHRONISATION (anti-métastabilité)
+            -- SYNCHRONISATION (anti-métastabilité)
             ------------------------------------------------------------------
             A_sync <= i_A;
             B_sync <= i_B;
 
             ------------------------------------------------------------------
-            -- 2️⃣ DEBOUNCE A
+            -- DEBOUNCE A
             ------------------------------------------------------------------
             if A_sync /= A_stable then
                 A_count <= A_count + 1;
@@ -367,7 +367,7 @@ begin
             end if;
 
             ------------------------------------------------------------------
-            -- 3️⃣ DEBOUNCE B
+            -- DEBOUNCE B
             ------------------------------------------------------------------
             if B_sync /= B_stable then
                 B_count <= B_count + 1;
@@ -380,13 +380,13 @@ begin
             end if;
 
             ------------------------------------------------------------------
-            -- 4️⃣ DÉTECTION DE FRONTS (sur signaux propres)
+            -- DÉTECTION DE FRONTS (sur signaux propres)
             ------------------------------------------------------------------
             A_d <= A_stable;
             B_d <= B_stable;
 
             ------------------------------------------------------------------
-            -- 5️⃣ LOGIQUE ENCODEUR
+            -- LOGIQUE ENCODEUR
             ------------------------------------------------------------------
 				-- INCRÉMENTATION
 				if (A_stable = '1' and A_d = '0' and B_stable = '0') or
