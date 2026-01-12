@@ -746,7 +746,7 @@ Voici une démonstration du résultat final obtenu avec dessin, puis appui sur l
 ## Conclusion  
 
 En conclusion, durant ces première séances de travaux pratiques, nous aurons appris à :  
-- Manipuler Quartus (Platform designer, RTL Viewer, ...) ainsi que Modelsim
+- Manipuler Quartus (RTL Viewer, ...) ainsi que Modelsim
 - Adopter une métthode pour travailler sur une thématique FPGA :
 	- Concevoir un schéma pour répondre à la problématique
 	- Implémenter la solution en VHDL
