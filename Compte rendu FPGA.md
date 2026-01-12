@@ -261,7 +261,7 @@ Ainsi, le compteur augmente si le signal A est en avance de phase sur B et dimin
 
 #### Analyse fonctionnelle  
 
-<img width="782" height="277" alt="image" src="https://github.com/user-attachments/assets/96489373-fdfc-495c-8286-77c7b4d1647b" />
+<img width="1023" height="241" alt="image" src="https://github.com/user-attachments/assets/ee5caea8-2a68-4fe0-b9da-183df4c9c530" />
 
 
 #### Implémentation de la solution VHDL  
