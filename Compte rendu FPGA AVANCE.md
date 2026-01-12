@@ -132,11 +132,12 @@ set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to o_led[9]
 
 Cet outil va nous permettre de construire notre propre micro-contrôleur ! 😁
 
-2. Sur Platform Designer, nous créeons alors notre propre système composé : d'un soft-processeur NIOS V, d'une mémoire ROM, du JTAG UART et de GPIOS. Une fois tous les composants ajoutés et les différents signaux connectés entre eux, nous obtenons alors la structure globale suivante :
+2. Sur Platform Designer, nous créeons alors notre propre système composé : d'un soft-processeur NIOS V, d'une mémoire ROM, du JTAG UART et de GPIOS.  
 
+Une fois tous les composants ajoutés et les différents signaux connectés entre eux, nous obtenons alors la structure globale suivante :  
 <img width="1064" height="661" alt="image" src="https://github.com/user-attachments/assets/96b83f9c-8d9e-402b-89ee-39df9c965fd4" />  
 
-4. Ensuite, nous générons les adresses.  
+3. Ensuite, nous générons les adresses.  
 
 > System > Assign Base Addresses
 
@@ -144,8 +145,6 @@ Cet outil va nous permettre de construire notre propre micro-contrôleur ! 😁
 
 > Nous double-cliquons sur le processeur ```intel_niosv_m_0```
 > Dans la section ```Traps, Exceptions and Interrupts```, nous configurons ```Reset Agent``` sur ```on_chip_memory2_0.s1```
-
-![rest_agent](figures/reset_agent.png)
 
 5. Et nous sauvegardons.
 
@@ -253,19 +252,16 @@ Puis, nous choisissons :
 
 > 5CSEBA6
 
-![debugger](figures/debugger.png)
-
 Enfin, nous cliquons sur ```Run```.
 
-4. Le soft-processeur est maintenant programmé. Nous déconnectons le debugger (cf. image ci-dessous)
-
-![stop](figures/stop.png)
+4. Le soft-processeur est maintenant programmé. Nous déconnectons le debugger
 
 5. Dans le terminal, nous nous connectons au soft-processeur 
 
 > juart-terminal
 
 Nous voyons alors bel et bien apparaître le contenu de notre printf !  
+
 <img width="1471" height="143" alt="image" src="https://github.com/user-attachments/assets/d584a7e5-c777-4003-8fa7-f0e83126cfce" />  
 
 ### L'inévitable chenillard
