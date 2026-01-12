@@ -4,7 +4,7 @@ Lien vers sujet FPGA : [sujet de FPGA](https://github.com/lfiack/ENSEA_2A_FPGA_P
 
 ## Introduction  
 
-Durant ces séances de travaux pratiques nous allons travailler sur Quartus.  
+Durant ces séances de travaux pratiques nous allons travaillé sur Quartus.  
 
 ## Tutoriel Quartus  
 
