@@ -454,7 +454,8 @@ end architecture;
 Nous commençons d'abord par simuler le comportement qu'aurait une carte FPGA suite à l'implémentation de notre solution VHDL.  
 
 Après avoir écrit notre fichier ```encodeurs_tb.bhd```, nous obtenons les résultats de simulations suivants :  
-$$$$$$$$$ IMAGES DE SIMULATION A MODIFIER PAR RAPPORT A NOUVELLE VERSION $$$$$$$$$$$$$$$$
+<img width="1876" height="624" alt="image" src="https://github.com/user-attachments/assets/c79c4c95-6c6a-4077-b2ab-9d96e279ffdc" />
+
 
 #### Implémentation du code VHDL sur la carte FPGA  
 
