@@ -2,6 +2,31 @@
 
 Lien vers sujet FPGA AVANCE : [sujet TP FPGA AVANCE](https://github.com/lfiack/ENSEA_2A_FPGA_Public/blob/main/majeure/3-tp/fpga_adv_tp.md)  
 
+## 📑 Sommaire
+
+<details>
+<summary><b>📌 Cliquer pour afficher le sommaire</b></summary>
+
+<br>
+
+- [📖 Introduction](#introduction)
+
+- [🧠 Tutoriel Nios V](#tutoriel-nios-v)
+  - [📂 Organisation](#organisation)
+  - [🛠️ Création du projet](#création-du-projet)
+  - [🧩 Création du SOPC](#création-du-sopc)
+  - [🔁 De retour dans Quartus](#de-retour-dans-quartus)
+  - [💻 Création du projet soft](#création-du-projet-soft)
+  - [👋 Hello, world!](#hello-world)
+  - [💡 L'inévitable chenillard](#linévitable-chenillard)
+
+- [🚀 Petit projet](#petit-projet)
+  - [🧭 Le niveau à bulles](#le-niveau-à-bulles)
+
+- [🏁 Conclusion](#conclusion)
+
+</details>  
+
 ## Introduction  
 
 Durant ces séances de travaux pratiques, nous allons concevoir un SOPC (System On a Programmable Chip).  
@@ -288,11 +313,29 @@ int main(void)
 Une fois le code compilé puis runné, nous obtenons alors le magnifique résultat suivant :  
 ![PXL_20260112_150929661 TS](https://github.com/user-attachments/assets/2d724ff2-b589-4237-8b92-580db8ce0cee)  
 
-## Petit projet  
+## Petit projet
 
-### Le niveau à bulles 
+Notre objectif est maintenant de réutiliser le télécran fait lors des TPs précédents et de faire en sorte que l'écran se nettoye lorsque la carte FPGA est secouée.  
 
-Dans un premier temps, on commence par modifier le fichier Quartus Platform Designer.  
+Pour ce faire, nous allons utiliser l'accéléromètre ADXL345 situé sur le shield de notre carte FPGA d'Analog Device dont la documentation est disponible ici : [adxl345.pdf](https://www.analog.com/media/en/technical-documentation/data-sheets/adxl345.pdf).  
+
+### Le niveau à bulles
+ 
+L'objectif de ce projet est d'afficher l'angle de la carte sur les LED à la manière d'un niveau à bulles.
+
+Pour ce faire nous nous aidons de l'[Annexe](#annexe) et en particulier des parties concernant le [Contrôleur I2C](#contrôleur-i2c) et l'[Accéléromètre ADXL345](#accéléromètre-adxl345).
+
+Nous suivons le protocole suivant :  
+1. Éditez le soft-processeur pour ajouter un contrôleur I2C.
+2. Modifiez le VHDL en conséquent.
+3. Supprimer le dossier ```bsp``` ainsi que tous les fichiers (sauf ```main.c```) dans le dossier ```app```.
+4. Recréez la bsp et l'app, importez-les dans RiscFree.
+    * Le chenillard devrait toujours être fonctionnel !
+5. Écrivez le code permettant de représenter l'angle de la carte sur les LED à la manière d'un niveau à bulles.
+
+Ainsi, dans un premier temps, on commence donc par modifier le fichier Quartus Platform Designer afin d'ajouter un bloc I2C.  
+Suite à cela, nous regénérons notre fichier VHDL décrivant notre SOPC, puis retéléversons le script VHDL sur notre carte FPGA avant de regénérer la BSP et les fichiers du dossier app.    
+Une fois tout cela fait, nous compilons et exécutons le code C suivant :  
 
 ```C
 #include <stdio.h>
@@ -410,3 +453,12 @@ uint16_t angle_to_leds(int16_t x)
 }
 ```
 
+Malheureusement, nous n'avons pas obtenu le résultat désiré une fois le code téléversé dans notre système.  
+
+## Conclusion  
+
+En conclusion, durant ces dernières séances de TP nous avons appris : 
+- À construire un système de type SOPC (System On a Programmable Chip) basé sur un soft-processeur de type NIOS V via Platform designer
+- À écrire du code en C et le téléverser comme il se doit dans notre système
+
+# FIN DE MON DERNIER TP A L'ENSEA 😁 
