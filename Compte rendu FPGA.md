@@ -1,10 +1,59 @@
-# Compte rendu du TP FPGA  
+# Compte rendu : TP FPGA  
 
-Lien vers sujet FPGA : [sujet de FPGA](https://github.com/lfiack/ENSEA_2A_FPGA_Public/blob/main/mineure/3-tp/fpga_tp.md)  
+Lien vers sujet FPGA : [sujet TP FPGA](https://github.com/lfiack/ENSEA_2A_FPGA_Public/blob/main/mineure/3-tp/fpga_tp.md)  
+
+## Sommaire  
+
+<details>  
+<summary><b>📌 Cliquez pour dérouler le sommaire</b></summary>  
+
+<br>
+
+- [📖 Introduction](#introduction)
+
+- [🛠️ Tutoriel Quartus](#tutoriel-quartus)
+  - [🔌 Branchement de la carte](#branchement-de-la-carte)
+  - [📁 Création d'un projet](#création-dun-projet)
+  - [🧾 Création d'un fichier VHDL](#création-dun-fichier-vhdl)
+  - [📌 Fichier de contraintes](#fichier-de-contraintes)
+  - [⚙️ Compilation et programmation de la carte](#compilation-et-programmation-de-la-carte)
+  - [💡 Faire clignoter une LED](#faire-clignoter-une-led)
+  - [✨ Chenillard](#chennillard-)
+
+- [🧪 Petit projet : écran magique](#petit-projet--écran-magique)
+  - [🎛️ Gestion des encodeurs](#gestion-des-encodeurs)
+    - [📊 Analyse fonctionnelle](#analyse-fonctionnelle)
+    - [🧠 Implémentation de la solution VHDL](#implémentation-de-la-solution-vhdl)
+    - [🖥️ Implémentation du modèle de simulation sur Modelsim](#implémentation-du-modèle-de-simulation-sur-modelsim)
+    - [🚀 Implémentation du code VHDL sur la carte FPGA](#implémentation-du-code-vhdl-sur-la-carte-fpga)
+
+  - [📺 Comment visualiser la sortie HDMI ?](#comment-visualiser-la-sortie-hdmi-)
+
+  - [🧩 Contrôleur HDMI](#contrôleur-hdmi)
+    - [📦 Entity](#entity)
+    - [↔️ Synchro horizontale](#synchro-horizontale)
+    - [↕️ Synchro verticale](#synchro-verticale)
+    - [🧪 Test et simulation sur ModelSim](#test-et-simulation-sur-modelsim)
+    - [🎯 Data enable : pixels actifs](#data-enable--pixels-actifs)
+    - [📍 Générateur d'adresses et de coordonnées](#générateur-dadresses-et-de-coordonnées)
+
+  - [🖱️ Déplacement d'un pixel](#déplacement-dun-pixel)
+  - [🧠 Mémorisation](#mémorisation)
+  - [🧹 Effacement](#effacement)
+  - [🏁 Résultat final de notre telecran](#résultat-final-de-notre-telecran)
+
+- [✅ Conclusion](#conclusion)
+
+</details>  
 
 ## Introduction  
 
-Durant ces séances de travaux pratiques nous allons travaillé sur Quartus.  
+Durant ces premières séances de travaux pratiques nous allons travailler sur Quartus et Modelsim.  
+
+Nos objectifs vont être :  
+- de faire clignoter une LED sur notre carte FPGA
+- d'implémenter un chenillard sur notre carte FPGA, en se basant sur un détecteur de front montant et descendant ainsi qu'un compteur
+- d'implémenter un écran magique permettant de visualiser, via VLC, les dessins faits par l'utilisateur
 
 ## Tutoriel Quartus  
 
@@ -20,7 +69,8 @@ Notre carte est la : ```5CSEBA6U23I7```
 
 ### Création d'un fichier VHDL  
 
-Nous créons un fichier VHDL et écrivons le code fournis dans le sujet. Ce code permet d'allumer la LED0 lorsqu'un bouton poussoir de l'encodeur gauche est enfoncé.  
+Nous créons un fichier VHDL et écrivons le code fournis dans le sujet.  
+Ce code permet d'allumer la LED0 lorsqu'un bouton poussoir de l'encodeur gauche est enfoncé.  
 Voici le code :  
 ```VHDL
 library ieee;
@@ -38,13 +88,15 @@ begin
     led0 <= pushl;
 end architecture rtl;
 ```
-ATTENTION : le nom de l'entité doit être le même que celui du projet !  
+
+> [!IMPORTANT]
+> ATTENTION : le nom de l'entité doit être le même que celui du projet !
 
 ### Fichier de contraintes  
 
 Nous avons :  
-```LED0``` est sur la broche ```PIN_AG28```
-```pushl``` est sur la broche ```PIN_AH27```
+```LED0``` est sur la broche ```PIN_AG28```  
+```pushl``` est sur la broche ```PIN_AH27```  
 Nous configurons cela via Assignments > Pin Planner  
 
 ### Compilation et programmation de la carte  
@@ -53,22 +105,24 @@ Nous configurons cela via Assignments > Pin Planner
 2° : nous lançons l'outil de programmation du FPGA => Tools > Programmer  
 3° : nous cliquons sur ```Auto detect```  
 4° : nous chargeons le bitstream => Clic-droit sur la puce > Edit > Change File  
-5° : nous sélectionnons le fichier .sof dans le dossier output_files et cochons la case ```Program/Configure```  
+5° : nous sélectionnons le fichier ```.sof``` dans le dossier output_files et cochons la case ```Program/Configure```  
 
-Nous obtenons alors le résultat suivant : la LED est allumée par défaut et s'éteind lorsque l'on appui sur l'encodeur de gauche. Nous voulons le fonctionnement inverse. Nous modifions donc le code de la manière suivante afin d'obtenir le résultat souhaité :  
+Nous obtenons alors le résultat suivant : la LED est allumée par défaut et s'éteind lorsque l'on appui sur l'encodeur de gauche.  
+Nous voulons le fonctionnement inverse.  
+Nous modifions donc le code de la manière suivante afin d'obtenir le résultat souhaité :  
 ```
 led0 <= not pushl;
-```
+```  
 Nous obtenons alors bien le résultat souhaité : la LED LED0 est éteinte par défaut et lorsque l'on appui sur l'encodeur gauche, celle-ci s'allume !  
 
 ### Faire clignoter une LED  
 
-Nous voulons maintenant d'un mode de fonctionnement combinatoire vers un mode de fonctionnement en séquentiel.  
+Nous voulons maintenant passer d'un mode de fonctionnement combinatoire vers un mode de fonctionnement en séquentiel.  
 
 D'après le document "DE10-Nano user manual", nous obtenons l'information suivante :  
 <img width="1036" height="245" alt="image" src="https://github.com/user-attachments/assets/b9454622-d1fd-4841-ab4d-ed316acf3c3c" />  
 
-Nous ajoutons le code suivant :  
+Nous implémentons alors le code suivant :  
 ```VHDL
 library ieee;
 use ieee.std_logic_1164.all;
@@ -96,9 +150,8 @@ begin
 end architecture rtl;
 ```  
 
-$$$$$$$$$$$$$$$$$$$$$$$$$$$$ TRACER LE SCHEMA CORRESPONDANT AU CODE VHDL $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$  
+Dans la zone de compilation, nous ouvrons : Compile Design > Analysis & Synthesis > Netlist Viewers puis lançons ```RTL Viewer```    
 
-Dans la zone de compilation, nous ouvrons : Compile Design > Analysis & Synthesis > Netlist Viewers puis lancer RTL Viewer  
 Nous obtenons alors :  
 <img width="1469" height="713" alt="image" src="https://github.com/user-attachments/assets/b442d370-8a39-4ec1-aa37-07036f4d8a15" />  
 
@@ -148,14 +201,17 @@ Depuis la vue RTL, nous obtenons alors :
 Nous utilisons l'encodeur gauche comme bouton de RESET.  
 
 Après avoir compilé et téléversé le code sur la carte FPGA, nous obtenons le résultat suivant :  
-![Clignotement de LED](https://github.com/user-attachments/assets/685e772d-a2a3-4353-b15c-ef6fd09bc2f2)  
-![Clignotement de LED avec appui sur RESET](https://github.com/user-attachments/assets/6dbf51bc-e1bc-4628-9276-16b61fa65c4f)  
+| Clignotement de LED | Clignotement de LED avec appui sur RESET |
+|--------------------|------------------------------------------|
+| ![](https://github.com/user-attachments/assets/685e772d-a2a3-4353-b15c-ef6fd09bc2f2) | ![](https://github.com/user-attachments/assets/6dbf51bc-e1bc-4628-9276-16b61fa65c4f) |
 
-Dans ```i_rst_n``` le suffixe _n sert à indiquer une logique inversée : '1' -> '0' et inversement '0' -> '1'.  
+> NOTE :  
+> Dans ```i_rst_n``` le suffixe __n_ sert à indiquer la logique inversée : '1' -> '0' et inversement '0' -> '1'.  
 
 ### Chennillard !!!  
 
-> CODE : Projet > TP_FPGA_CHENILLARD  
+> CODE VHDL :  
+> Projet > TP_FPGA_CHENILLARD  
 
 Nous réalisons maintenant un chennillard sur notre carte FPGA.  
 
@@ -226,7 +282,8 @@ begin
 end architecture rtl;
 ```  
 >NOTE :  
->La ligne ```r_leds <= r_leds(0) & r_leds(9 downto 1);``` permet de réaliser le décallage du '1'. Elle permet de rajouter en bout de ligne un '1' et donc de le décaler dans le buffer.  
+>La ligne ```r_leds <= r_leds(0) & r_leds(9 downto 1);``` permet de réaliser le décallage du '1'.  
+>Elle permet de rajouter en bout de ligne un '1' et donc de le décaler dans le buffer.  
 
 Nous obtenons alors un beau chenillard ! 😁  
 ![PXL_20251212_103750952](https://github.com/user-attachments/assets/e038c168-e414-40ad-b3ed-ba4ec03203d5)  
@@ -237,32 +294,35 @@ Nous obtenons alors un beau chenillard ! 😁
 ## Petit projet : écran magique  
 
 L'objectif est de réaliser un télécran.  
-
+```
 Nous adopterons une démarche en plusieurs étapes afin de parvenir au résultat final, tout en suivant la démarche suivante pour chaque étape :  
 - Concevoir un schéma pour répondre à la problématique
 - Implémenter la solution en VHDL
 - Simuler cette solution
 - Tester sur la carte
+```
 
 ### Gestion des encodeurs  
 
 L'idée est la suivante : lorsque l'on tourne l'encodeur vers la droite, on incrémente la valeur d'un compteur. Lorsque l'on tourne l'encodeur vers la gauche, on décrémente la valeur du compteur.  
 Nous voulons, en plus de cela, afficher sur les leds la valeur du compteur qui ira donc de 1 à 10 (pour pouvoir afficher la valeur du compteur sur les LEDs étant au nombre de 10).  
 
-De manière plus détaillée, le fonctionnement est le suivant :  
-Un encodeur renvoie deux signaux : A et B, qui sont en quadrature de phase.  
-Il y a deux conditions possible pour incrémenter le registre :  
+De manière plus détaillée, le fonctionnement est le suivant : un encodeur renvoie deux signaux : A et B, qui sont en quadrature de phase.  
+
+Il y a alors deux conditions possible pour incrémenter le registre :  
 - Front montant sur A et B à l'état bas
-- Front descendant sur A et B à l'état haut  
-Il y a deux conditions possible pour décrémenter le registre :  
+- Front descendant sur A et B à l'état haut
+ 
+Et il y a deux conditions possible pour décrémenter le registre :  
 - Front montant sur B et A à l'état bas
 - Front descendant sur B et A à l'état haut
-Ainsi, le compteur augmente si le signal A est en avance de phase sur B et diminue si le signal A est en retard de phase sur le signal B.
+
+Ainsi, le compteur augmente si le signal A est en avance de phase sur B et diminue si le signal A est en retard de phase sur le signal B.  
 
 #### Analyse fonctionnelle  
 
-<img width="1023" height="241" alt="image" src="https://github.com/user-attachments/assets/ee5caea8-2a68-4fe0-b9da-183df4c9c530" />
-
+D'un point de vue fonctionnel, les idées mentionnées précédemment peuvent se traduire par le schema RTL suivant :  
+<img width="1023" height="241" alt="image" src="https://github.com/user-attachments/assets/ee5caea8-2a68-4fe0-b9da-183df4c9c530" />  
 
 #### Implémentation de la solution VHDL  
 
@@ -445,69 +505,78 @@ begin
     end process;
 
 end architecture;
-```
+```  
 
 #### Implémentation du modèle de simulation sur Modelsim  
 
-> CODE SIMULATION : Projet > TP_FPGA_ENCODEURS_MODELSIM  
+> CODE SIMULATION :  
+> Projet > TP_FPGA_ENCODEURS_MODELSIM  
 
 Nous commençons d'abord par simuler le comportement qu'aurait une carte FPGA suite à l'implémentation de notre solution VHDL.  
 
 Après avoir écrit notre fichier ```encodeurs_tb.bhd```, nous obtenons les résultats de simulations suivants :  
-<img width="1876" height="624" alt="image" src="https://github.com/user-attachments/assets/c79c4c95-6c6a-4077-b2ab-9d96e279ffdc" />
-
+<img width="1876" height="624" alt="image" src="https://github.com/user-attachments/assets/c79c4c95-6c6a-4077-b2ab-9d96e279ffdc" />  
 
 #### Implémentation du code VHDL sur la carte FPGA  
 
-> CODE CIBLE : Projet > TP_FPGA_ENCODEURS_QUARTUS
+> CODE CIBLE :  
+> Projet > TP_FPGA_ENCODEURS_QUARTUS  
 
 Suite à cela, nous téléversons alors notre fichier VHDL sur notre carte FPGA.  
 
 Voici le schéma RTL généré par Quartus :  
+<img width="1849" height="429" alt="image" src="https://github.com/user-attachments/assets/00e54cc4-dedf-4427-93e9-629ea8364190" />  
+Pour voir celui-ci plus en détails : [cliquez-ici](https://github.com/HugouShare/ENSEA_3A_TP_FPGA-FPGA_AVANCE/blob/main/Projet/TP_FPGA/fichier%20RTL.pdf)
 
-<img width="1849" height="429" alt="image" src="https://github.com/user-attachments/assets/00e54cc4-dedf-4427-93e9-629ea8364190" />
-Pour voir plus en détails : [lien PDF schéma RTL](https://github.com/HugouShare/ENSEA_3A_TP_FPGA-FPGA_AVANCE/blob/main/Projet/TP_FPGA/fichier%20RTL.pdf).
+### Comment visualiser la sortie HDMI ?  
 
+Nous branchons le cable HDMI à notre carte et à l'adaptateur.  
+Puis nous branchons le port USB à l'ordinateur.  
+Enfin, nous lançons le logiciel VLC et ajoutons un nouveau _Capture device_ et définissons le _Video device name_ à ```USB Video```.  
 
-Voici le résultat :  
+Voici ce que nous obtenons pour le moment :  
+<img width="636" height="613" alt="image" src="https://github.com/user-attachments/assets/544abffe-df75-41b0-b813-94bff751b3c2" />  
 
+### Contrôleur HDMI  
 
+Afin de concevoir un contrôleur HDMI, nous reprenons ce que nous avons conçu durant la séance de TD :  
 
-### Comment visualiser la sortie HDMI ? 
-Nous avons branché le cable HDMI à notre carte et à l'adaptateur. Puis nous avons branché le port USB à l'ordinateur.
-Puis nous lançons le logiciel VLC et ajoutons un nouveau Capture Device et définissons le Video device name en ```USB Video```   : 
-<img width="636" height="613" alt="image" src="https://github.com/user-attachments/assets/544abffe-df75-41b0-b813-94bff751b3c2" /> 
+#### Entity  
 
-### Contrôleur HDMI
-Nous avons remis en oeuvre le contrôleur HDMI conçu en TD : 
-#### Entity
-1. Création d'un fichier hdmi_controler.vhd
-2. Écriture de la partie ```generic``` de son ```entity```
-3. Écriture de la partie ```port``` de  ```entity```
+1. Création d'un fichier _hdmi_controler.vhd_    
+2. Écriture de la partie ```generic``` de son ```entity```  
+3. Écriture de la partie ```port``` de son ```entity```  
 
-#### Synchro horizontale
-1. Création trois constantes : ```h_start : h_sync + h_fp``` ,  ```h_end : h_start + h_res``` , ```h_total : h_end + h_bp```
-2. Création de deux registres : ```r_h_count``` et ```r_h_active```
-3. Création d'un process sensible aux signaux d'horloge et de reset
-4. Ecriture des différents codes des signaux et de registre
+#### Synchro horizontale  
 
-#### Synchro verticale 
-1. Création trois constantes : ```v_start : v_sync + v_fp``` ,  ```v_end : v_start + v_res``` , ```v_total : v_end + v_bp```
-2. Création de deux registres : ```r_v_count``` et ```r_v_active```
-3. Création d'un process sensible aux signaux d'horloge et de reset
-4. Ecriture des différents codes des signaux et de registre
-Test et simulation sur ModelSim :
-<img width="1807" height="620" alt="image" src="https://github.com/user-attachments/assets/e6c44105-2067-482f-8ab3-932ff538f37b" />
+1. Création de trois constantes : ```h_start : h_sync + h_fp``` ,  ```h_end : h_start + h_res``` , ```h_total : h_end + h_bp```  
+2. Création de deux registres : ```r_h_count``` et ```r_h_active```  
+3. Création d'un process sensible aux signaux d'horloge et de reset  
+4. Ecriture des différents scripts des signaux et registres  
 
-#### Data Enable : Pixels actifs  
-On décrit le registre de sortie ```o_hdmi_de``` de telle sorte qu'en cas de reset, la sortie prenne la valeur 'O'. Et en cas de front montant : ```o_hdmi_de <= r_v_active and r_h_active;```
+#### Synchro verticale  
 
-#### Générateur d'adresse et de coordonnées  
-Nous écrivons le code permettant de générer le signal ```o_pixel_en``` et les signaux ```o_x_counter``` , ```o_y_counter``` et ```o_pixel_address```.
+1. Création de trois constantes : ```v_start : v_sync + v_fp``` ,  ```v_end : v_start + v_res``` , ```v_total : v_end + v_bp```  
+2. Création de deux registres : ```r_v_count``` et ```r_v_active```  
+3. Création d'un process sensible aux signaux d'horloge et de reset  
+4. Ecriture des différents scripts des signaux et registres  
+   
+#### Test et simulation sur ModelSim  
 
-Nous ajoutons le fichier ```hdmi_controler.vhd au projet```.
+Après écriture du fichier VHDL, du testbench ainsi que du fichier .do, nous obtenons les résultats suivants sur ModelSim :  
+<img width="1807" height="620" alt="image" src="https://github.com/user-attachments/assets/e6c44105-2067-482f-8ab3-932ff538f37b" />  
 
-Nous instancions le composant ```hdmi_controler``` dans notre fichier top (telecran.vhd).
+#### Data enable : pixels actifs  
+
+On décrit le registre de sortie ```o_hdmi_de``` de telle sorte qu'en cas de reset, la sortie prenne la valeur 'O' et en cas de front montant : ```o_hdmi_de <= r_v_active and r_h_active;```.  
+
+#### Générateur d'adresses et de coordonnées  
+
+Nous écrivons le code permettant de générer le signal ```o_pixel_en``` et les signaux ```o_x_counter``` , ```o_y_counter``` et ```o_pixel_address```.  
+
+Nous ajoutons le fichier _hdmi_controler.vhd_ au projet.  
+
+Nous instançons le composant ```hdmi_controler``` dans notre fichier top (telecran.vhd) comme suit :  
 ```VHDL
 -- HDMI controler
     hdmi_ctrl : component hdmi_controler
@@ -522,21 +591,24 @@ Nous instancions le composant ```hdmi_controler``` dans notre fichier top (telec
             o_x_counter     => open,
             o_y_counter     => open
         );
-```
+```  
 
 ### Déplacement d'un pixel  
-Nous modifions le fichier ```telecran.vhd```, on atribue la valeur blanche ```o_hdmi_tx_d``` : 
+
+Nous modifions le fichier ```telecran.vhd```, on atribue la valeur blanche ```o_hdmi_tx_d``` :  
 ```VHDL
 o_hdmi_tx_d <= (others => '1') when s_pixel_data = x"FF" else (others => '0');
 ```
 
 ### Mémorisation  
-On a réussi à mémoiriser les pixels parcourus pour afficher le dessin. Nous avons utilisé un ```framebuffer``` pour stocker les pixels déjà allumés. 
 
-Une mémoire ```dual-port``` est une mémoire qui possède deux ports d’accès indépendants, permettant deux opérations simultanées sur la même mémoire. Elle peut effectuer en même temps une lecture ou une écriture.
+Suite à cela, nous implémentons le script permettant de mémoriser les pixels parcourus pour afficher le dessin.  
+Pour faire cela, nous utilisons un ```framebuffer``` pour stocker les pixels déjà allumés et les futurs pixels à allumer.  
+
+Une mémoire ```dual-port``` est une mémoire qui possède deux ports d’accès indépendants, permettant deux opérations simultanées sur la même mémoire.   
+Elle peut ainsi effectuer en même temps une lecture ou une écriture.  
 
 Fichier ```dpram.vhd``` : 
-
 ```VHDL
 library ieee;
 use ieee.std_logic_1164.all;
@@ -594,9 +666,9 @@ begin
         end if;
     end process;
 end rtl;
-```
+```  
 
-Extension du composant ```dpram``` dans le fichier ```telecran.vhd``` : 
+Extension du composant ```dpram``` dans le fichier ```telecran.vhd``` :  
 ``` VHDL
 	component dpram 
         generic (
@@ -618,27 +690,26 @@ Extension du composant ```dpram``` dans le fichier ```telecran.vhd``` :
     end component;
 
 ```
-Puis nous modifions le signal ```o_hdmi_tx_d```.
 
+Puis nous modifions le signal ```o_hdmi_tx_d```.  
 
-### Effacement  
-Il faut l faut :
-- Détecter l’appui sur un bouton,
-- Lancer un processus automatique,
-- Ecrire 0 partout,
-- Puis revenir au fonctionnement normal.
+### Effacement   
 
-Signaux pour l'éffacement qui ont été introduit dans ```telecran.vhd```
+Afin de pouvoir effectuer une opération d'effacement, il faut :  
+- Détecter l’appui sur un bouton  
+- Lancer un processus automatique  
+- Ecrire 0 partout  
+- Puis revenir au fonctionnement normal  
+
+Signaux pour l'effacement qui ont été introduits dans ```telecran.vhd``` :  
 ```VHDL
 	signal r_erase_active : std_logic := '0';
     signal r_erase_addr   : natural range 0 to (720 * 480) - 1 := 0;
     signal s_mux_addr_a   : natural range 0 to (720 * 480) - 1;
     signal s_mux_data_a   : std_logic_vector(7 downto 0);
-
 ```
 
-
-FOnction pour l'effacement de la RAM : 
+Fonction pour l'effacement : 
 ```VHDL
 	process(i_clk_50, i_rst_n)
     begin
@@ -660,18 +731,27 @@ FOnction pour l'effacement de la RAM :
     end process;
 ```
 
+### Résultat final de notre telecran 
 
-#### Résultat de notre Telecran : 
+Finalement, après intégration de tous les différents blocs construits précédemment, nous implémentons notre script VHDL final. 
 
-Notre encodeur gauche déplace le pixel à l'horizontal, l'encodeur droit déplace le pixel à la verticale. Lorsque nous appuyons sur le bouton de l'encodeur gauche, l'écran s'éteint.
+D'un point de vue fonctionnel :  
+- notre encodeur gauche déplace le pixel à l'horizontal
+- l'encodeur droit déplace le pixel à la verticale
+- enfin, lorsque nous appuyons sur le bouton de l'encodeur gauche, l'écran s'éteint
 
-<img width="638" height="603" alt="image" src="https://github.com/user-attachments/assets/be6cb17f-2398-447d-b5d1-5ce0a3c79515" />
+Voici une démonstration du résultat final obtenu avec dessin, puis appui sur le bouton RESET :  
+![dshow___-VLC-media-player-2026-01-12-16-36-28](https://github.com/user-attachments/assets/d40aa5e9-42af-4f5b-adf0-20ab160f172b)  
 
+## Conclusion  
 
-Video test : 
+En conclusion, durant ces première séances de travaux pratiques, nous aurons appris à :  
+- Manipuler Quartus (Platform designer, RTL Viewer, ...) ainsi que Modelsim
+- Adopter une métthode pour travailler sur une thématique FPGA :
+	- Concevoir un schéma pour répondre à la problématique
+	- Implémenter la solution en VHDL
+	- Simuler cette solution
+	- Tester sur la carte
+ - Réaliser un chenillard sur carte FPGA ainsi qu'un télécran  
 
-
-![dshow___-VLC-media-player-2026-01-12-16-36-28](https://github.com/user-attachments/assets/d40aa5e9-42af-4f5b-adf0-20ab160f172b)
-
-
-
+# FIN
