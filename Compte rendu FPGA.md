@@ -470,6 +470,7 @@ Pour voir plus en détails : [lien PDF schéma RTL](https://github.com/HugouShar
 
 Voici le résultat :  
 
+
 ### Comment visualiser la sortie HDMI ? 
 Nous avons branché le cable HDMI à notre carte et à l'adaptateur. Puis nous avons branché le port USB à l'ordinateur.
 Puis nous lançons le logiciel VLC et ajoutons un nouveau Capture Device et définissons le Video device name en ```USB Video```   : 
