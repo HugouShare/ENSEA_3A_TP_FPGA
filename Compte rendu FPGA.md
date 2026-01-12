@@ -667,6 +667,8 @@ Notre encodeur gauche déplace le pixel à l'horizontal, l'encodeur droit dépla
 
 <img width="638" height="603" alt="image" src="https://github.com/user-attachments/assets/be6cb17f-2398-447d-b5d1-5ce0a3c79515" />
 
+Video test : 
+![dshow___-VLC-media-player-2026-01-12-16-36-28](https://github.com/user-attachments/assets/d40aa5e9-42af-4f5b-adf0-20ab160f172b)
 
 
 
