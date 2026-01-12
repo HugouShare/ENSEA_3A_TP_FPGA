@@ -1,0 +1,21 @@
+bsp/CMakeFiles/hal2_bsp.dir/HAL/src/intel_fpga_platform_api_niosv.c.obj: \
+ C:/Users/hugof/Documents/FORMATIONS/ENSEA_3A_S9/ESE_5-LinuxEmbarque/TP_FPGA_AVANCE/tp_nios_v/soft/bsp/HAL/src/intel_fpga_platform_api_niosv.c \
+ C:/Users/hugof/Documents/FORMATIONS/ENSEA_3A_S9/ESE_5-LinuxEmbarque/TP_FPGA_AVANCE/tp_nios_v/soft/bsp/HAL/inc/intel_fpga_platform_api.h \
+ C:/Users/hugof/Documents/FORMATIONS/ENSEA_3A_S9/ESE_5-LinuxEmbarque/TP_FPGA_AVANCE/tp_nios_v/soft/bsp/HAL/inc/sys/intel_fpga_platform_api_niosv.h \
+ C:/Users/hugof/Documents/FORMATIONS/ENSEA_3A_S9/ESE_5-LinuxEmbarque/TP_FPGA_AVANCE/tp_nios_v/soft/bsp/system.h \
+ C:/Users/hugof/Documents/FORMATIONS/ENSEA_3A_S9/ESE_5-LinuxEmbarque/TP_FPGA_AVANCE/tp_nios_v/soft/bsp/linker.h \
+ C:/altera_standard/25.1std/riscfree/toolchain/riscv32-unknown-elf/lib/gcc/riscv32-unknown-elf/13.2.0/include/stdarg.h \
+ C:/altera_standard/25.1std/riscfree/toolchain/riscv32-unknown-elf/lib/gcc/riscv32-unknown-elf/13.2.0/include/stdbool.h \
+ C:/Users/hugof/Documents/FORMATIONS/ENSEA_3A_S9/ESE_5-LinuxEmbarque/TP_FPGA_AVANCE/tp_nios_v/soft/bsp/HAL/inc/sys/intel_fpga_api_cmn_msg.h \
+ C:/altera_standard/25.1std/riscfree/toolchain/riscv32-unknown-elf/lib/gcc/riscv32-unknown-elf/13.2.0/include/stdint.h \
+ C:/altera_standard/25.1std/riscfree/toolchain/riscv32-unknown-elf/riscv32-unknown-elf/include/stdint.h \
+ C:/altera_standard/25.1std/riscfree/toolchain/riscv32-unknown-elf/riscv32-unknown-elf/include/machine/_default_types.h \
+ C:/altera_standard/25.1std/riscfree/toolchain/riscv32-unknown-elf/riscv32-unknown-elf/include/sys/features.h \
+ C:/altera_standard/25.1std/riscfree/toolchain/riscv32-unknown-elf/riscv32-unknown-elf/include/_newlib_version.h \
+ C:/altera_standard/25.1std/riscfree/toolchain/riscv32-unknown-elf/riscv32-unknown-elf/include/sys/_intsup.h \
+ C:/altera_standard/25.1std/riscfree/toolchain/riscv32-unknown-elf/riscv32-unknown-elf/include/sys/_stdint.h \
+ C:/Users/hugof/Documents/FORMATIONS/ENSEA_3A_S9/ESE_5-LinuxEmbarque/TP_FPGA_AVANCE/tp_nios_v/soft/bsp/HAL/inc/intel_fpga_platform.h \
+ C:/Users/hugof/Documents/FORMATIONS/ENSEA_3A_S9/ESE_5-LinuxEmbarque/TP_FPGA_AVANCE/tp_nios_v/soft/bsp/HAL/inc/sys/intel_fpga_platform_niosv.h \
+ C:/altera_standard/25.1std/riscfree/toolchain/riscv32-unknown-elf/lib/gcc/riscv32-unknown-elf/13.2.0/include/stddef.h \
+ C:/Users/hugof/Documents/FORMATIONS/ENSEA_3A_S9/ESE_5-LinuxEmbarque/TP_FPGA_AVANCE/tp_nios_v/soft/bsp/HAL/inc/sys/intel_fpga_api_cmn_dfl.h \
+ C:/Users/hugof/Documents/FORMATIONS/ENSEA_3A_S9/ESE_5-LinuxEmbarque/TP_FPGA_AVANCE/tp_nios_v/soft/bsp/HAL/inc/sys/intel_fpga_api_cmn_inf.h

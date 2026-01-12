@@ -8,7 +8,7 @@
   </columns>
  </systemtable>
  <library
-   expandedCategories="Project,Library/Processors and Peripherals/Embedded Processors,Library/Processors and Peripherals/Peripherals,Library/Processors and Peripherals,Library" />
+   expandedCategories="Library/Interface Protocols/Serial,Library/Interface Protocols,Library,Project" />
  <window width="1938" height="1038" x="-9" y="-9" />
- <generation synthesis="VHDL" />
+ <generation synthesis="VHDL" path="_PROJECT_NAME_" />
 </preferences>

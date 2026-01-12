@@ -1,0 +1,26 @@
+bsp/CMakeFiles/hal2_bsp.dir/HAL/src/alt_fs_reg.c.obj: \
+ C:/Users/hugof/Documents/FORMATIONS/ENSEA_3A_S9/ESE_5-LinuxEmbarque/TP_FPGA_AVANCE/tp_nios_v/soft/bsp/HAL/src/alt_fs_reg.c \
+ C:/altera_standard/25.1std/riscfree/toolchain/riscv32-unknown-elf/riscv32-unknown-elf/include/errno.h \
+ C:/altera_standard/25.1std/riscfree/toolchain/riscv32-unknown-elf/riscv32-unknown-elf/include/sys/errno.h \
+ C:/altera_standard/25.1std/riscfree/toolchain/riscv32-unknown-elf/riscv32-unknown-elf/include/sys/reent.h \
+ C:/altera_standard/25.1std/riscfree/toolchain/riscv32-unknown-elf/riscv32-unknown-elf/include/_ansi.h \
+ C:/altera_standard/25.1std/riscfree/toolchain/riscv32-unknown-elf/riscv32-unknown-elf/include/newlib.h \
+ C:/altera_standard/25.1std/riscfree/toolchain/riscv32-unknown-elf/riscv32-unknown-elf/include/_newlib_version.h \
+ C:/altera_standard/25.1std/riscfree/toolchain/riscv32-unknown-elf/riscv32-unknown-elf/include/sys/config.h \
+ C:/altera_standard/25.1std/riscfree/toolchain/riscv32-unknown-elf/riscv32-unknown-elf/include/machine/ieeefp.h \
+ C:/altera_standard/25.1std/riscfree/toolchain/riscv32-unknown-elf/riscv32-unknown-elf/include/sys/features.h \
+ C:/altera_standard/25.1std/riscfree/toolchain/riscv32-unknown-elf/lib/gcc/riscv32-unknown-elf/13.2.0/include/stddef.h \
+ C:/altera_standard/25.1std/riscfree/toolchain/riscv32-unknown-elf/riscv32-unknown-elf/include/sys/cdefs.h \
+ C:/altera_standard/25.1std/riscfree/toolchain/riscv32-unknown-elf/riscv32-unknown-elf/include/machine/_default_types.h \
+ C:/altera_standard/25.1std/riscfree/toolchain/riscv32-unknown-elf/riscv32-unknown-elf/include/sys/_types.h \
+ C:/altera_standard/25.1std/riscfree/toolchain/riscv32-unknown-elf/riscv32-unknown-elf/include/machine/_types.h \
+ C:/altera_standard/25.1std/riscfree/toolchain/riscv32-unknown-elf/riscv32-unknown-elf/include/sys/lock.h \
+ C:/Users/hugof/Documents/FORMATIONS/ENSEA_3A_S9/ESE_5-LinuxEmbarque/TP_FPGA_AVANCE/tp_nios_v/soft/bsp/HAL/inc/sys/alt_dev.h \
+ C:/Users/hugof/Documents/FORMATIONS/ENSEA_3A_S9/ESE_5-LinuxEmbarque/TP_FPGA_AVANCE/tp_nios_v/soft/bsp/system.h \
+ C:/Users/hugof/Documents/FORMATIONS/ENSEA_3A_S9/ESE_5-LinuxEmbarque/TP_FPGA_AVANCE/tp_nios_v/soft/bsp/linker.h \
+ C:/Users/hugof/Documents/FORMATIONS/ENSEA_3A_S9/ESE_5-LinuxEmbarque/TP_FPGA_AVANCE/tp_nios_v/soft/bsp/HAL/inc/sys/alt_llist.h \
+ C:/Users/hugof/Documents/FORMATIONS/ENSEA_3A_S9/ESE_5-LinuxEmbarque/TP_FPGA_AVANCE/tp_nios_v/soft/bsp/HAL/inc/alt_types.h \
+ C:/Users/hugof/Documents/FORMATIONS/ENSEA_3A_S9/ESE_5-LinuxEmbarque/TP_FPGA_AVANCE/tp_nios_v/soft/bsp/HAL/inc/priv/alt_dev_llist.h \
+ C:/Users/hugof/Documents/FORMATIONS/ENSEA_3A_S9/ESE_5-LinuxEmbarque/TP_FPGA_AVANCE/tp_nios_v/soft/bsp/HAL/inc/priv/alt_file.h \
+ C:/Users/hugof/Documents/FORMATIONS/ENSEA_3A_S9/ESE_5-LinuxEmbarque/TP_FPGA_AVANCE/tp_nios_v/soft/bsp/HAL/inc/os/alt_sem.h \
+ C:/Users/hugof/Documents/FORMATIONS/ENSEA_3A_S9/ESE_5-LinuxEmbarque/TP_FPGA_AVANCE/tp_nios_v/soft/bsp/HAL/inc/priv/alt_no_error.h
